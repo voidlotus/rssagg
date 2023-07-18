@@ -2,13 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"net/http"
 	"fmt"
+	"net/http"
 	"time"
-	"github.com/voidlotus/rssagg/internal/database"
-	"github.com/google/uuid"
-)
 
+	"github.com/google/uuid"
+	"github.com/voidlotus/rssagg/internal/database"
+)
 
 func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
@@ -31,5 +31,10 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 		respondWithError(w, 400, fmt.Sprintf("Couldnt creatge user: %v", err))
 		return
 	}
+	// 201 is the created code
+	respondWithJSON(w, 201, databaseUserToUser(user))
+}
+
+func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	respondWithJSON(w, 200, databaseUserToUser(user))
 }
